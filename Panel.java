@@ -41,7 +41,7 @@ public class Panel extends JPanel implements Runnable {
      */
     Panel() {
         this.setPreferredSize(new Dimension(SCREENWIDTH, SCREENHEIGHT));
-        this.setBackground(blueColor);;
+        this.setBackground(blueColor);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyInput);
         this.setFocusable(true);
@@ -71,10 +71,6 @@ public class Panel extends JPanel implements Runnable {
         ImageIcon ii = new ImageIcon("Cloud.jpg");
         cloud = ii.getImage();        
     }
-    
-    public void initLive() {
-        loadLive();
-    }
 
     public void initGameOver() {
         loadGameOver();
@@ -83,6 +79,10 @@ public class Panel extends JPanel implements Runnable {
     private void loadGameOver() {
         ImageIcon ii = new ImageIcon("GameOver.png");
         gameOver = ii.getImage();        
+    }
+
+    public void initLive() {
+        loadLive();
     }
 
     /**
@@ -192,8 +192,9 @@ public class Panel extends JPanel implements Runnable {
             enemy.resetX();
 
         } 
-        if ((enemy.enemyY + 50  == foodY) && (enemy.enemyX >= foodX - 64) && (enemy.enemyX <= foodX + 64)) {
+        if ((enemy.enemyY + 50  >= foodY) && (enemy.enemyX >= foodX - 64) && (enemy.enemyX <= foodX + 64)) {
             lives -= 1;
+            enemy.resetY();
             
         }
     }

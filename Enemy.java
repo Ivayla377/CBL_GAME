@@ -11,7 +11,7 @@ public class Enemy {
     Random rand = new Random();
     public int enemyX = rand.nextInt(6) * 100;
     public int enemyY = 40;
-    public int speed = rand.nextInt(1, 3);
+    public int speed = 4;
 
     Image enemy;
 
@@ -33,5 +33,12 @@ public class Enemy {
      */
     public void resetX() {
         enemyX = rand.nextInt(6) * 100;
+    }
+
+    /**
+     * Reset the height from which enemy falls.
+     */
+    public void resetY() {
+        enemyX = 40;
     }
 }
