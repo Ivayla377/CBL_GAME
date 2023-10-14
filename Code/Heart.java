@@ -18,7 +18,7 @@ public class Heart {
     }
 
     private void loadHeart() {
-        ImageIcon ii = new ImageIcon("heart.png");
+        ImageIcon ii = new ImageIcon("Images/heart.png");
         heart = ii.getImage();        
     }
 
