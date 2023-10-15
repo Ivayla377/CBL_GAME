@@ -21,6 +21,14 @@ public class Enemy {
         loadEnemy();
     }
 
+    public void resetY() {
+        enemyY = rand.nextInt(40, 100);
+    }
+
+    public void resetX() {
+        enemyX = rand.nextInt(6) * 100;
+    }
+
     private void loadEnemy() {
         ImageIcon ii = new ImageIcon("Images/Emo.png");
         enemy = ii.getImage();        

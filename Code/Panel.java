@@ -17,10 +17,10 @@ public class Panel extends JPanel implements Runnable {
 
     static int foodX = 234;
     int foodY = 716;
-    int speed = 2;
+    int speed = 3;
     static int lives = 3;
     int score = 0;
-    int fps = 60;
+    int fps = 30;
     
 
     Thread gameThread;
@@ -117,10 +117,10 @@ public class Panel extends JPanel implements Runnable {
             update();
             repaint();
 
-            if (lives == 0) {
-                repaint();
-                break;
-            }
+            // if (lives == 0) {
+            //     repaint();
+            //     break;
+            // }
 
             try {
                 double timeToNext = nextDraw - System.nanoTime();
@@ -147,7 +147,7 @@ public class Panel extends JPanel implements Runnable {
         if (keyInput.isRight && (foodX + speed) < 536) {
             foodX += speed;
         }
-        fallEnemies.updateFallEnemies();
+        updateFallEnemies();
     }
 
     /**
@@ -171,5 +171,33 @@ public class Panel extends JPanel implements Runnable {
 
     }
 
-    
+    public void updateFallEnemies() {
+
+        for (int i = 0; i < 5; i++) {
+            if ((fallEnemies.enemies[i].enemyY + fallEnemies.enemies[i].speed) < 780) {
+                fallEnemies.enemies[i].enemyY += fallEnemies.enemies[i].speed;
+            }
+            if ((fallEnemies.enemies[i].enemyY + 45) >= 730) {
+                fallEnemies.enemies[i].resetY();
+                fallEnemies.enemies[i].resetX();
+
+            } 
+            if ((fallEnemies.enemies[i].enemyY + 50  >= foodY) 
+                && (fallEnemies.enemies[i].enemyX >= foodX - 64) 
+                && (fallEnemies.enemies[i].enemyX <= foodX + 64)) {
+            
+                lives -= 1;
+                if (lives == 0) {
+                    repaint();
+                    gameThread = null;
+                }
+                fallEnemies.enemies[i].resetY();
+                try {
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        }
+    }    
 }
