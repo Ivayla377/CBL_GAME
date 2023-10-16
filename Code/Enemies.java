@@ -8,6 +8,7 @@ public class Enemies extends Enemy {
     
     
     Enemy [] enemies = new Enemy[5];
+    Boolean [] lanes = new Boolean[6];
 
     /**
      * Initialize array of enemies.
@@ -17,6 +18,8 @@ public class Enemies extends Enemy {
             enemies[i] = new Enemy();
         }
     }
+
+    
 
     public void drawFallEnemy(Graphics graphics) {
         for (int i = 0; i < 5; i++) {

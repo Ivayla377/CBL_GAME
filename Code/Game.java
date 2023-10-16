@@ -12,7 +12,7 @@ public class Game {
 
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         JFrame game = new JFrame("YAM YAM YAM");
-        JTextField textField = new JTextField(8);
+        //JTextField textField = new JTextField(8);
         // textField.setFont(textField.getFont().deriveFont(50f));
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setResizable(false);

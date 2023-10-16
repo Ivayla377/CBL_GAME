@@ -7,9 +7,11 @@ import javax.swing.ImageIcon;
  */
 public class Enemy {
     Random rand = new Random();
-    public int enemyX = rand.nextInt(6) * 100;
+    public int lane = rand.nextInt(6);
+    public int enemyX = lane * 100;
     public int enemyY = 40;
     public int speed = 4;
+
 
     Image enemy;
 
@@ -21,12 +23,17 @@ public class Enemy {
         loadEnemy();
     }
 
+    public void resetLane() {
+        lane = rand.nextInt(6);
+    }
+
     public void resetY() {
         enemyY = rand.nextInt(40, 100);
     }
 
     public void resetX() {
-        enemyX = rand.nextInt(6) * 100;
+        resetLane();
+        enemyX = lane * 100;
     }
 
     private void loadEnemy() {
