@@ -12,32 +12,29 @@ public class Game {
 
     public static void main(String[] args) 
         throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        System.out.println("what");
+        JFrame game = new JFrame("YAM YAM YAM");
+        //JTextField textField = new JTextField(8);
+        // textField.setFont(textField.getFont().deriveFont(50f));
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setResizable(false);
 
-        // System.out.println("hey");
-        // JFrame game = new JFrame("YAM YAM YAM");
-        // //JTextField textField = new JTextField(8);
-        // // textField.setFont(textField.getFont().deriveFont(50f));
-        // game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // game.setResizable(false);
+        Panel gamePlay = new Panel();
+        // gamePlay.add(textField);
+        game.add(gamePlay);
 
-        // Panel gamePlay = new Panel();
-        // // gamePlay.add(textField);
-        // game.add(gamePlay);
+        game.pack();
 
-        // game.pack();
+        game.setLocationRelativeTo(null);
+        game.setVisible(true);
 
-        // game.setLocationRelativeTo(null);
-        // game.setVisible(true);
-        
-        // gamePlay.startGameThread();
-        // // while (gamePlay.gameThread != null) {
-        // //     File file = new File("Theme.wav");
-        // //     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-        // //     Clip clip = AudioSystem.getClip();
-        // //     clip.open(audioInputStream);
-        // //     clip.start();
-        // // }
+        gamePlay.startGameThread();
+        // while (gamePlay.gameThread != null) {
+        //     File file = new File("Theme.wav");
+        //     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+        //     Clip clip = AudioSystem.getClip();
+        //     clip.open(audioInputStream);
+        //     clip.start();
+        // }
         
 
     }

@@ -20,7 +20,7 @@ public class Panel extends JPanel implements Runnable {
     int speed = 3;
     static int lives = 3;
     int score = 0;
-    int fps = 30;
+    int fps = 64;
     
 
     Thread gameThread;
@@ -33,6 +33,7 @@ public class Panel extends JPanel implements Runnable {
     Heart heart = new Heart();
     GameOver gameOver = new GameOver();
     Enemies fallEnemies = new Enemies();
+    //Enemy fallEnemy2 = new Enemy();
     Random rand = new Random(); 
 
     /**
@@ -109,14 +110,12 @@ public class Panel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        System.out.println("what");
         double refresh = 1000000000 / 60;
         double nextDraw = System.nanoTime() + refresh;
 
         while (gameThread != null) {
             update();
             repaint();
-            
 
             // if (lives == 0) {
             //     repaint();
@@ -157,7 +156,6 @@ public class Panel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics graphics) {
         initLive();
-        System.out.println("what");
         super.paintComponent(graphics);
         graphics.drawImage(cloud, -100, 0, this);
         fallEnemies.drawFallEnemy(graphics);
@@ -179,7 +177,7 @@ public class Panel extends JPanel implements Runnable {
             if ((fallEnemies.enemies[i].enemyY + fallEnemies.enemies[i].speed) < 780) {
                 fallEnemies.enemies[i].enemyY += fallEnemies.enemies[i].speed;
             }
-            if ((fallEnemies.enemies[i].enemyY + 45) >= 730) {
+            if ((fallEnemies.enemies[i].enemyY + 45) >= 810) {
                 fallEnemies.enemies[i].resetY();
                 fallEnemies.enemies[i].resetX();
 

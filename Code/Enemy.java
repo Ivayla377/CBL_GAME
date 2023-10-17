@@ -28,7 +28,7 @@ public class Enemy {
     }
 
     public void resetY() {
-        enemyY = rand.nextInt(40, 100);
+        enemyY = rand.nextInt(-40, 100);
     }
 
     public void resetX() {
