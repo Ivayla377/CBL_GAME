@@ -15,25 +15,26 @@ public class Panel extends JPanel implements Runnable {
     static final int SCREENWIDTH = 600;
     static final int SCREENHEIGHT = 780;
 
-    static int foodX = 234;
+    int foodX = 234;
     int foodY = 716;
     int speed = 3;
-    static int lives = 3;
-    int score = 0;
-    int fps = 64;
+    int lives = 3;
+    int minutes = 0;
+    int seconds = 0;
+    int fps = 60;
     
 
     Thread gameThread;
     KeyInput keyInput = new KeyInput();
-    Image croissant;
-    Image cloud;
     Image digit;
     Image live;
     Color blueColor = new Color(137, 207, 240);
+    Cloud cloud = new Cloud();
+    Croissant croissant = new Croissant();
     Heart heart = new Heart();
+    SemiColon semiColon = new SemiColon();
     GameOver gameOver = new GameOver();
     Enemies fallEnemies = new Enemies();
-    //Enemy fallEnemy2 = new Enemy();
     Random rand = new Random(); 
 
     /**
@@ -46,29 +47,7 @@ public class Panel extends JPanel implements Runnable {
         this.addKeyListener(keyInput);
         this.setFocusable(true);
         this.setLayout(new FlowLayout());
-        initCroissant();
-        initCloud();
         initLive();
-    }
-
-    
-
-    public void initCroissant() {
-        loadCroissant();
-    }
-
-    private void loadCroissant() {
-        ImageIcon ii = new ImageIcon("Images/Croissant.jpg");
-        croissant = ii.getImage();        
-    }
-
-    public void initCloud() {
-        loadCloud();
-    }
-
-    private void loadCloud() {
-        ImageIcon ii = new ImageIcon("Images/Cloud.jpg");
-        cloud = ii.getImage();        
     }
 
     public void initLive() {
@@ -110,7 +89,7 @@ public class Panel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        double refresh = 1000000000 / 60;
+        double refresh = 1000000000 / fps;
         double nextDraw = System.nanoTime() + refresh;
 
         while (gameThread != null) {
@@ -157,12 +136,12 @@ public class Panel extends JPanel implements Runnable {
     public void paintComponent(Graphics graphics) {
         initLive();
         super.paintComponent(graphics);
-        graphics.drawImage(cloud, -100, 0, this);
+        graphics.drawImage(cloud.cloud, -100, 0, this);
         fallEnemies.drawFallEnemy(graphics);
-        //graphics.drawImage(fallEnemy2.enemy, fallEnemy2.enemyX, fallEnemy2.enemyY, this);
+        graphics.drawImage(semiColon.semiColon, 520, 0, this);
         graphics.drawImage(heart.heart, 0, 0, this);
         graphics.drawImage(live, 32, 0, this);
-        graphics.drawImage(croissant, foodX, foodY, this);
+        graphics.drawImage(croissant.croissant, foodX, foodY, this);
         if (lives == 0) {
             graphics.drawImage(gameOver.gameOver, 0, 200, this);
         }
