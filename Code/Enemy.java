@@ -24,7 +24,7 @@ public class Enemy {
         rand = new Random();
         lane = rand.nextInt(6);
         enemyX = lane * 100;
-        enemyY = rand.nextInt(-40, 100);
+        enemyY = 40;
         speed = 4;
         emo = new Emo();
         enemy = emo.emoImage;

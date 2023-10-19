@@ -19,17 +19,21 @@ public class Panel extends JPanel implements Runnable {
     int foodY = 716;
     int speed = 3;
     int lives = 3;
-    int minutes = 0;
-    int seconds = 0;
     int fps = 60;
+    int stage = 0;
+    long minutes = 0;
+    long seconds = 0;
     
+    Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
 
     Thread gameThread;
     KeyInput keyInput = new KeyInput();
+    MouseClick mouse = new MouseClick();
     Image digit;
     Image live;
     Color blueColor = new Color(137, 207, 240);
     Cloud cloud = new Cloud();
+    StartButton startButton = new StartButton();
     Croissant croissant = new Croissant();
     Heart heart = new Heart();
     SemiColon semiColon = new SemiColon();
@@ -45,6 +49,7 @@ public class Panel extends JPanel implements Runnable {
         this.setBackground(blueColor);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyInput);
+        this.addMouseListener(mouse);
         this.setFocusable(true);
         this.setLayout(new FlowLayout());
         initLive();
@@ -137,6 +142,18 @@ public class Panel extends JPanel implements Runnable {
         initLive();
         super.paintComponent(graphics);
         graphics.drawImage(cloud.cloud, -100, 0, this);
+        if (stage == 0) {
+            for (int i = 0; i < 5; i++) {
+                fallEnemies.enemies[i].speed = 0;
+            }
+            graphics.drawImage(startButton.startButton, 150, 200, this);
+            if (pseudoRectangle.contains(mouse.clickX, mouse.clickY)) {
+                for (int i = 0; i < 5; i++) {
+                    fallEnemies.enemies[i].speed = 4;
+                }
+                stage += 1;
+            }
+        }
         fallEnemies.drawFallEnemy(graphics);
         graphics.drawImage(semiColon.semiColon, 520, 0, this);
         graphics.drawImage(heart.heart, 0, 0, this);
@@ -149,6 +166,7 @@ public class Panel extends JPanel implements Runnable {
         graphics.dispose();
 
     }
+
 
     public void updateFallEnemies() {
 

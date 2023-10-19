@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.awt.Rectangle;
 
 
 /**
@@ -11,6 +12,8 @@ public class Game {
 
     public static void main(String[] args) 
         throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
+        MouseClick mouse = new MouseClick();
         JFrame game = new JFrame("YAM YAM YAM");
         //JTextField textField = new JTextField(8);
         // textField.setFont(textField.getFont().deriveFont(50f));
@@ -25,6 +28,8 @@ public class Game {
 
         game.setLocationRelativeTo(null);
         game.setVisible(true);
+
+        
 
         gamePlay.startGameThread();
         // while (gamePlay.gameThread != null) {
