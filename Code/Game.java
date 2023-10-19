@@ -25,11 +25,8 @@ public class Game {
         game.add(gamePlay);
 
         game.pack();
-
         game.setLocationRelativeTo(null);
         game.setVisible(true);
-
-        
 
         gamePlay.startGameThread();
         // while (gamePlay.gameThread != null) {

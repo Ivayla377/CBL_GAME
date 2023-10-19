@@ -21,6 +21,10 @@ public class Panel extends JPanel implements Runnable {
     int lives = 3;
     int fps = 60;
     int stage = 0;
+    int score = 0;
+    int scoreDigit = 0;
+    int scoreTenth = 0; 
+    int scoreHundreths = 0;
     long minutes = 0;
     long seconds = 0;
     
@@ -29,14 +33,17 @@ public class Panel extends JPanel implements Runnable {
     Thread gameThread;
     KeyInput keyInput = new KeyInput();
     MouseClick mouse = new MouseClick();
-    Image digit;
+    //Image digit;
+    Image tenth;
+    Image hundreth;
     Image live;
     Color blueColor = new Color(137, 207, 240);
+    Digit printDigit = new Digit();
     Cloud cloud = new Cloud();
     StartButton startButton = new StartButton();
     Croissant croissant = new Croissant();
     Heart heart = new Heart();
-    SemiColon semiColon = new SemiColon();
+    //SemiColon semiColon = new SemiColon();
     GameOver gameOver = new GameOver();
     Enemies fallEnemies = new Enemies();
     Random rand = new Random(); 
@@ -132,6 +139,7 @@ public class Panel extends JPanel implements Runnable {
             foodX += speed;
         }
         updateFallEnemies();
+        System.out.println(score);
     }
 
     /**
@@ -155,7 +163,8 @@ public class Panel extends JPanel implements Runnable {
             }
         }
         fallEnemies.drawFallEnemy(graphics);
-        graphics.drawImage(semiColon.semiColon, 520, 0, this);
+        printDigit.drawDigit(graphics);
+        //graphics.drawImage(semiColon.semiColon, 520, 0, this);
         graphics.drawImage(heart.heart, 0, 0, this);
         graphics.drawImage(live, 32, 0, this);
         graphics.drawImage(croissant.croissant, foodX, foodY, this);
@@ -177,17 +186,12 @@ public class Panel extends JPanel implements Runnable {
             if ((fallEnemies.enemies[i].enemyY + 45) >= 810) {
                 fallEnemies.enemies[i].resetY();
                 fallEnemies.enemies[i].resetX();
-
+                updateScore();
             } 
             if ((fallEnemies.enemies[i].enemyY + 50  >= foodY) 
                 && (fallEnemies.enemies[i].enemyX >= foodX - 64) 
                 && (fallEnemies.enemies[i].enemyX <= foodX + 64)) {
-            
-                lives -= 1;
-                if (lives == 0) {
-                    repaint();
-                    gameThread = null;
-                }
+                checkGameOver();
                 fallEnemies.enemies[i].resetY();
                 try {
                     Thread.sleep(300);
@@ -196,5 +200,22 @@ public class Panel extends JPanel implements Runnable {
                 }
             }
         }
-    }    
+    }
+
+    public void updateScore() {
+        score++;
+        scoreDigit = score % 10;
+        printDigit.digitString = String.valueOf(scoreDigit);
+        printDigit.loadDigit();
+        scoreTenth = (score % 100) / 10;
+        scoreHundreths = score / 100;
+    }
+    
+    public void checkGameOver() {
+        lives -= 1;
+        if (lives == 0) {
+            repaint();
+            gameThread = null;
+        }
+    }
 }
