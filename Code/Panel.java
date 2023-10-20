@@ -1,4 +1,9 @@
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import javax.swing.*;
 
@@ -22,6 +27,7 @@ public class Panel extends JPanel implements Runnable {
     int fps = 60;
     int stage = 0;
     int score = 0;
+    int max = 0;
     int scoreDigit = 0;
     int scoreTenth = 0; 
     int scoreHundreths = 0;
@@ -33,10 +39,8 @@ public class Panel extends JPanel implements Runnable {
     Thread gameThread;
     KeyInput keyInput = new KeyInput();
     MouseClick mouse = new MouseClick();
-    //Image digit;
-    Image tenth;
-    Image hundreth;
     Image live;
+    Image [] maxScore = new Image[3];
     Player player = new Player();
     Color blueColor = new Color(137, 207, 240);
     Digit printDigit = new Digit();
@@ -68,6 +72,36 @@ public class Panel extends JPanel implements Runnable {
     public void initLive() {
         loadLive();
     }
+
+    public void initM() {
+        loadM();
+    }
+
+    private void loadM() {
+        ImageIcon ii = new ImageIcon("Images/M.png");
+        maxScore[0] = ii.getImage();        
+    }
+
+    public void initA() {
+        loadA();
+    }
+
+    private void loadA() {
+        ImageIcon ii = new ImageIcon("Images/A.png");
+        maxScore[1] = ii.getImage();        
+    }
+
+    public void initX() {
+        loadX();
+    }
+
+    private void loadX() {
+        ImageIcon ii = new ImageIcon("Images/X.png");
+        maxScore[2] = ii.getImage();        
+    }
+
+
+
 
     /**
      * Show how many lives left.
@@ -155,6 +189,8 @@ public class Panel extends JPanel implements Runnable {
         if (stage == 0) {
             Enemy.speed = 0;
             graphics.drawImage(startButton.startButton, 150, 200, this);
+            drawMaxScore(graphics);
+            updateScore(score);
             if (pseudoRectangle.contains(mouse.clickX, mouse.clickY)) {
                 Enemy.speed = 4;
                 stage += 1;
@@ -174,17 +210,38 @@ public class Panel extends JPanel implements Runnable {
 
     }
 
+    public void drawMaxScore(Graphics graphics) {
+        initM();
+        initA();
+        initX();
+        int xC = 200;
+        for (Image i : maxScore) {
+            graphics.drawImage(i, xC, 0, this);
+            xC += 32;
+        }
+        try {
+            max = getScoreFromFile();
+        } catch (IOException e) {
+            System.out.println("nz macka");
+        }
+        updateScore(max);
+        graphics.drawImage(printHundred.hundred, xC + 32, 0, this);
+        graphics.drawImage(printTenth.tenth, xC + 64, 0, this);
+        graphics.drawImage(printDigit.digit, xC + 96, 0, this);
+    }
+
 
     public void updateFallEnemies() {
 
         for (int i = 0; i < 5; i++) {
-            if ((fallEnemies.enemies[i].enemyY + fallEnemies.enemies[i].speed) < 780) {
-                fallEnemies.enemies[i].enemyY += fallEnemies.enemies[i].speed;
+            if ((fallEnemies.enemies[i].enemyY + Enemy.speed) < 780) {
+                fallEnemies.enemies[i].enemyY += Enemy.speed;
             }
             if ((fallEnemies.enemies[i].enemyY + 45) >= 810) {
                 fallEnemies.enemies[i].resetY();
                 fallEnemies.enemies[i].resetX();
-                updateScore();
+                score++;
+                updateScore(score);
             } 
             if ((fallEnemies.enemies[i].enemyY + 50  >= foodY) 
                 && (fallEnemies.enemies[i].enemyX >= foodX - 64) 
@@ -200,17 +257,28 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
-    public void updateScore() {
-        score++;
-        scoreDigit = score % 10;
+    public int getDigit(int num) {
+        return num % 10;
+    }
+
+    public int getTenth(int num) {
+        return (num % 100) / 10;
+    }
+
+    public int getHundreth(int num) {
+        return num / 100;
+    }
+
+    public void updateScore(int num) {
+        scoreDigit = getDigit(num);
         printDigit.digitString = String.valueOf(scoreDigit);
         printDigit.loadDigit();
 
-        scoreTenth = (score % 100) / 10;
+        scoreTenth = getTenth(num);
         printTenth.tenthString = String.valueOf(scoreTenth);
         printTenth.loadTenth();
         
-        scoreHundreths = score / 100;
+        scoreHundreths = getHundreth(num);
         printHundred.hundredString = String.valueOf(scoreHundreths);
         printHundred.loadHundred();
         updateStage();
@@ -248,6 +316,58 @@ public class Panel extends JPanel implements Runnable {
         if (lives == 0) {
             repaint();
             gameThread = null;
+            saveScore();
         }
+    }
+
+    public void saveScore() {
+        int maxScoreFromFile = 0;
+        try {
+            maxScoreFromFile = getScoreFromFile();
+        } catch (IOException e) {
+            System.out.println("nz macka");
+        }
+        if (maxScoreFromFile < score) {
+            File fold = new File("ScoreText.txt");
+            fold.delete();
+            File fnew = new File("ScoreText.txt");
+
+            try {
+                FileWriter f2 = new FileWriter(fnew, false);
+                f2.write(Integer.toString(score));
+                f2.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }     
+        }
+
+    }
+
+    public int getScoreFromFile() throws IOException{
+        // Creating a path choosing file from local
+        // directory by creating an object of Path class
+        Path fileName = 
+            Path.of("C:\\Users\\20231442\\OneDrive - TU Eindhoven\\Desktop\\Study Materials\\Programming files\\Java\\Projects and Homework\\Canvas\\Homework\\CBL\\CBL_GAME\\Code\\ScoreText.txt");
+ 
+        // Now calling Files.readString() method to
+        // read the file
+        String score = Files.readString(fileName);
+        // Printing the string
+        return Integer.valueOf(score);
+    }
+
+    public void drawFinalScore() {
+        scoreDigit = score % 10;
+        printDigit.digitString = String.valueOf(scoreDigit);
+        printDigit.loadDigit();
+
+        scoreTenth = (score % 100) / 10;
+        printTenth.tenthString = String.valueOf(scoreTenth);
+        printTenth.loadTenth();
+        
+        scoreHundreths = score / 100;
+        printHundred.hundredString = String.valueOf(scoreHundreths);
+        printHundred.loadHundred();
+
     }
 }
