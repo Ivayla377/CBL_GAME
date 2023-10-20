@@ -10,7 +10,7 @@ public class Enemy {
     public int lane;
     public int enemyX;
     public int enemyY;
-    public int speed;
+    public static int speed;
 
 
     Image enemy;

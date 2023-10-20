@@ -37,11 +37,14 @@ public class Panel extends JPanel implements Runnable {
     Image tenth;
     Image hundreth;
     Image live;
+    Player player = new Player();
     Color blueColor = new Color(137, 207, 240);
     Digit printDigit = new Digit();
+    Tenth printTenth = new Tenth();
+    Hundred printHundred = new Hundred();
     Cloud cloud = new Cloud();
     StartButton startButton = new StartButton();
-    Croissant croissant = new Croissant();
+    //Croissant croissant = new Croissant();
     Heart heart = new Heart();
     //SemiColon semiColon = new SemiColon();
     GameOver gameOver = new GameOver();
@@ -139,7 +142,6 @@ public class Panel extends JPanel implements Runnable {
             foodX += speed;
         }
         updateFallEnemies();
-        System.out.println(score);
     }
 
     /**
@@ -151,23 +153,19 @@ public class Panel extends JPanel implements Runnable {
         super.paintComponent(graphics);
         graphics.drawImage(cloud.cloud, -100, 0, this);
         if (stage == 0) {
-            for (int i = 0; i < 5; i++) {
-                fallEnemies.enemies[i].speed = 0;
-            }
+            Enemy.speed = 0;
             graphics.drawImage(startButton.startButton, 150, 200, this);
             if (pseudoRectangle.contains(mouse.clickX, mouse.clickY)) {
-                for (int i = 0; i < 5; i++) {
-                    fallEnemies.enemies[i].speed = 4;
-                }
+                Enemy.speed = 4;
                 stage += 1;
             }
         }
         fallEnemies.drawFallEnemy(graphics);
-        printDigit.drawDigit(graphics);
+        drawScore(graphics);
         //graphics.drawImage(semiColon.semiColon, 520, 0, this);
         graphics.drawImage(heart.heart, 0, 0, this);
         graphics.drawImage(live, 32, 0, this);
-        graphics.drawImage(croissant.croissant, foodX, foodY, this);
+        graphics.drawImage(player.player, foodX, foodY, this);
         if (lives == 0) {
             graphics.drawImage(gameOver.gameOver, 0, 200, this);
         }
@@ -207,8 +205,42 @@ public class Panel extends JPanel implements Runnable {
         scoreDigit = score % 10;
         printDigit.digitString = String.valueOf(scoreDigit);
         printDigit.loadDigit();
+
         scoreTenth = (score % 100) / 10;
+        printTenth.tenthString = String.valueOf(scoreTenth);
+        printTenth.loadTenth();
+        
         scoreHundreths = score / 100;
+        printHundred.hundredString = String.valueOf(scoreHundreths);
+        printHundred.loadHundred();
+        updateStage();
+        updatePlayer();
+    }
+
+    public void drawScore(Graphics graphics) {
+        printDigit.drawDigit(graphics);
+        printTenth.drawTenth(graphics);
+        printHundred.drawHundred(graphics);
+    }
+
+    public void updateStage() {
+        if (score == 10 || score == 100) {
+            stage++;
+            System.out.println(stage);
+        }
+    }
+
+    public void updatePlayer() {
+        if (stage == 2) {
+            player.playertoString = "Stroopwaffel";
+            player.loadPlayer();
+            Enemy.speed = 5;
+        }
+        if (stage == 3) {
+            // player.playertoString = "Stroopwaffel";
+            // player.loadPlayer();
+            Enemy.speed = 6;
+        }
     }
     
     public void checkGameOver() {

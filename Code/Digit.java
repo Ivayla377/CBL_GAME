@@ -8,11 +8,9 @@ public class Digit {
     
     Image digit;
     String digitString;
-    String fileName;
 
     public Digit() {
         digitString = "0";
-        fileName = "Images/" + digitString + ".png";
         initDigit();
     }
 
@@ -21,7 +19,7 @@ public class Digit {
     }
 
     public void loadDigit() {
-        ImageIcon ii = new ImageIcon(fileName);
+        ImageIcon ii = new ImageIcon("Images/" + digitString + ".png");
         digit = ii.getImage();
     }
 
