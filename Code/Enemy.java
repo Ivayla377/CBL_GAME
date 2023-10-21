@@ -6,50 +6,48 @@ import javax.swing.ImageIcon;
  * Enemy class with standard data for each enemy object.
  */
 public class Enemy {
-    Random rand;
-    public int lane;
     public int enemyX;
     public int enemyY;
-    public static int speed;
+    private int speed;
+    public Image enemyImage;
 
-
-    Image enemy;
-    Emo emo;
-
-
-    /**
-     * Constructor.
-     */
-    public Enemy() {
-        rand = new Random();
-        lane = rand.nextInt(6);
-        enemyX = lane * 100;
-        enemyY = 40;
-        speed = 4;
-        emo = new Emo();
-        enemy = emo.emoImage;
+    public Enemy(int enemyX, int enemyY) {
+        this.enemyX = enemyX;
+        this.enemyY = enemyY;
     }
 
-    // public void initEnemyImage() {
-    //     loadEnemyImage();
-    // }
-
-    // public void loadEnemyImage() {
-    //     ImageIcon ii = new ImageIcon("Images/Emo.png");
-    //     enemy = ii.getImage();
-    // }
-
-    public void resetLane() {
-        lane = rand.nextInt(6);
+    public void initEnemyImage(String fileName) {
+        loadEnemyImage(fileName);
     }
 
-    public void resetX() {
-        resetLane();
+    private void loadEnemyImage(String fileName) {
+        ImageIcon ii = new ImageIcon(fileName);
+        this.enemyImage = ii.getImage();        
+    }
+
+    public void setX(int lane) {
         enemyX = lane * 100;
     }
 
-    public void resetY() {
-        enemyY = rand.nextInt(-40, 100);
+    public void setY(int row) {
+        enemyY = row * -64;
+    }
+
+    public int getEnemySpeed() {
+        return speed;
+    }
+
+    public void moveEnemy() {
+        int speed = getEnemySpeed();  
+        if ((enemyY + speed) < 780) {
+            enemyY += speed;
+        }
     }
     
+    public boolean checkForCollision(int foodX, int foodY) {
+        if ((enemyY + 50  >= foodY) && (enemyX >= foodX - 64) && (enemyX <= foodX + 64)) {
+            return true;
+        }
+        return false;
+    }
 }
