@@ -10,6 +10,7 @@ public class KeyInput implements KeyListener {
     public boolean isDown;
     public boolean isLeft;
     public boolean isRight;
+    public boolean restart;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -26,6 +27,9 @@ public class KeyInput implements KeyListener {
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_NUMPAD6) {
             isRight = true;
         }
+        if (code == KeyEvent.VK_R) {
+            restart = true;
+        }
     }
 
     @Override
@@ -37,6 +41,9 @@ public class KeyInput implements KeyListener {
         }
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_NUMPAD6) {
             isRight = false;
+        }
+        if (code == KeyEvent.VK_R) {
+            restart = false;
         }
     }
 

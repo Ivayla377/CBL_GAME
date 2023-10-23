@@ -13,6 +13,7 @@ public class EnemiesManager{
     }
 
     public void initStage1Enemies(int numEnemies) {
+        clearEnemies();
         int lane;
         int row;
         for (int i = 0; i < numEnemies; i++) {
@@ -24,7 +25,7 @@ public class EnemiesManager{
 
             int randomX = lane * 100;
             int randomY = row * -64;
-            
+
             Stage1Enemy enemy = new Stage1Enemy(randomX, randomY);
             enemies.add(enemy);
         }
@@ -32,10 +33,17 @@ public class EnemiesManager{
 
     public void initStage2Enemies(int numEnemies) {
         clearEnemies();
+        int lane;
+        int row;
         for (int i = 0; i < numEnemies; i++) {
-            int lane = rand.nextInt(6);
+
+            do {
+                lane = rand.nextInt(numLanes);
+                row = rand.nextInt(numRows);
+            } while (checkForOverlap(lane, row));
+
             int randomX = lane * 100;
-            int randomY = rand.nextInt(-40, 100);
+            int randomY = row * -64;
             Stage2Enemy enemy = new Stage2Enemy(randomX, randomY);
             enemies.add(enemy);
         }

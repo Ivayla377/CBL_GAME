@@ -30,6 +30,7 @@ public class Panel extends JPanel implements Runnable {
     int scoreHundreths = 0;
     long minutes = 0;
     long seconds = 0;
+    boolean isGameOver = false;
     
     Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
 
@@ -81,7 +82,9 @@ public class Panel extends JPanel implements Runnable {
         double nextDraw = System.nanoTime() + refresh;
 
         while (gameThread != null) {
-            update();
+            if (stage != 0){
+                update();
+            }
             repaint();
 
             try {
@@ -106,6 +109,10 @@ public class Panel extends JPanel implements Runnable {
         player.updatePlayer(keyInput);        
         updateFallEnemies();
         updateStage();
+        checkRestart();
+    }
+
+    public void initStart(Graphics graphics) {
     }
 
     /**
@@ -117,15 +124,19 @@ public class Panel extends JPanel implements Runnable {
         super.paintComponent(graphics);
         graphics.drawImage(cloud.cloud, -100, 0, this);
 
+
         if (stage == 0) {
             graphics.drawImage(startButton.startButton, 150, 200, this);
             drawMaxScore(graphics);
             updateScore(score);
             if (pseudoRectangle.contains(mouse.clickX, mouse.clickY)) {
+                mouse.clickX = 0;
+                mouse.clickY = 0;
                 stage = 1;
                 enemiesManager.initStage1Enemies(5);
             }
         }
+
 
         enemiesManager.drawEnemies(graphics);
 
@@ -137,13 +148,16 @@ public class Panel extends JPanel implements Runnable {
         if (lives == 0) {
             graphics.drawImage(gameOver.gameOver, 0, 200, this);
         }
-        
+
+        if(isGameOver) {
+            enemiesManager.clearEnemies();
+        }
+
         graphics.dispose();
 
     }
 
     public void updateFallEnemies() {
-
         for (Enemy enemy : enemiesManager.enemies) { 
             enemy.moveEnemy();
             if (enemy.checkForCollision(player.foodX, player.foodY)) {
@@ -172,13 +186,24 @@ public class Panel extends JPanel implements Runnable {
         lives -= 1;
         if (lives == 0) {
             repaint();
-            gameThread = null;
-            saveScore();
+            isGameOver = true;
+            saveMaxScore();
         }
     }
 
+    public void checkRestart() {
+        if (isGameOver && keyInput.restart) {
+            lives = 3;
+            score = 0;
+            stage = 0;
+            isGameOver = false;
+            repaint();
+        }
+        
+    }
+
     // SCORE
-    public void saveScore() {
+    public void saveMaxScore() {
         int maxScoreFromFile = 0;
         try {
             maxScoreFromFile = getScoreFromFile();
