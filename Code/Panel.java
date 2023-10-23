@@ -31,6 +31,8 @@ public class Panel extends JPanel implements Runnable {
     long minutes = 0;
     long seconds = 0;
     boolean isGameOver = false;
+    int bgX = -100;
+    int bgY = 0;
     
     Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
 
@@ -110,6 +112,13 @@ public class Panel extends JPanel implements Runnable {
         updateFallEnemies();
         updateStage();
         checkRestart();
+        
+        if (keyInput.isLeft && bgX < 0) {
+            bgX += 1;
+        }
+        if (keyInput.isRight && bgX +780 > 600 ) {
+            bgX -= 1;
+        }
     }
 
     public void initStart(Graphics graphics) {
@@ -122,7 +131,7 @@ public class Panel extends JPanel implements Runnable {
     public void paintComponent(Graphics graphics) {
         initLive();
         super.paintComponent(graphics);
-        graphics.drawImage(cloud.cloud, -100, 0, this);
+        graphics.drawImage(cloud.cloud, bgX, bgY, this);
 
 
         if (stage == 0) {
@@ -147,6 +156,7 @@ public class Panel extends JPanel implements Runnable {
 
         if (lives == 0) {
             graphics.drawImage(gameOver.gameOver, 0, 200, this);
+            graphics.drawImage(gameOver.restartText, 150, 100, this);
         }
 
         if(isGameOver) {
