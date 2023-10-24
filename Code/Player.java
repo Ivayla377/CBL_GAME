@@ -7,6 +7,8 @@ public class Player {
     public int foodX;
     public int foodY;
     public int speed;
+    public int boostSpeed;
+    public int numberOfBoosts = 3;
     
     Image player;
     String playertoString;
@@ -15,6 +17,7 @@ public class Player {
         foodX = 234;
         foodY = 716;
         speed = 3;
+        boostSpeed = 7;
         playertoString = "Croissant";
         initPlayer();
     }
@@ -34,6 +37,20 @@ public class Player {
         }
         if (keyInput.isRight && (foodX + speed) < 536) {
             foodX += speed;
+        }
+        if (keyInput.isLeft && keyInput.boast && numberOfBoosts > 0) {
+            foodX -= speed*boostSpeed;
+            if(boostSpeed > 0) {
+                boostSpeed--;
+                if(boostSpeed == 0) { System.out.println("boast ended"); numberOfBoosts--;}
+            }
+        }
+        if (keyInput.isRight && keyInput.boast && numberOfBoosts > 0) {
+            foodX += speed*boostSpeed;
+            if(boostSpeed > 0) {
+                boostSpeed--;
+                if(boostSpeed == 0) { numberOfBoosts--;}
+            }
         }
     }
 }

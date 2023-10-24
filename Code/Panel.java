@@ -2,11 +2,18 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import javax.swing.*;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
+import javax.swing.*;
 
 /**
  *  Game Play.
@@ -37,6 +44,8 @@ public class Panel extends JPanel implements Runnable {
     Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
 
     Thread gameThread;
+    Clip backgroundMusic;
+    boolean isMusicPlaying = false;
     KeyInput keyInput = new KeyInput();
     MouseClick mouse = new MouseClick();
     Image live;
@@ -112,7 +121,7 @@ public class Panel extends JPanel implements Runnable {
         updateFallEnemies();
         updateStage();
         checkRestart();
-        
+
         if (keyInput.isLeft && bgX < 0) {
             bgX += 1;
         }
@@ -121,7 +130,35 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
-    public void initStart(Graphics graphics) {
+    public void startBackgroundMusic() {
+        if (!isMusicPlaying) {
+            Thread musicThread = new Thread(() -> {
+                try {
+                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Media/final_countdown.wav");
+                    AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
+                    AudioFormat audioFormat = audioStream.getFormat();
+
+                    DataLine.Info info = new DataLine.Info(Clip.class, audioFormat);
+                    backgroundMusic = (Clip) AudioSystem.getLine(info);
+                    backgroundMusic.open(audioStream);
+                    backgroundMusic.start();
+                    isMusicPlaying = true;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            musicThread.start();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+            backgroundMusic.close();
+            isMusicPlaying = false;
+        }
     }
 
     /**
@@ -142,6 +179,10 @@ public class Panel extends JPanel implements Runnable {
                 mouse.clickX = 0;
                 mouse.clickY = 0;
                 stage = 1;
+                // startMusic();
+                // audioThread.start();
+                startBackgroundMusic();
+
                 enemiesManager.initStage1Enemies(5);
             }
         }
@@ -196,6 +237,7 @@ public class Panel extends JPanel implements Runnable {
         lives -= 1;
         if (lives == 0) {
             repaint();
+            stopBackgroundMusic();
             isGameOver = true;
             saveMaxScore();
         }
@@ -207,6 +249,8 @@ public class Panel extends JPanel implements Runnable {
             score = 0;
             stage = 0;
             isGameOver = false;
+            player.playertoString = "Croissant";
+            player.loadPlayer();
             repaint();
         }
         

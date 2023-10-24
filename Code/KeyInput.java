@@ -11,6 +11,7 @@ public class KeyInput implements KeyListener {
     public boolean isLeft;
     public boolean isRight;
     public boolean restart;
+    public boolean boast;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -30,6 +31,9 @@ public class KeyInput implements KeyListener {
         if (code == KeyEvent.VK_R) {
             restart = true;
         }
+        if (code == KeyEvent.VK_SPACE) {
+            boast = true;
+        }
     }
 
     @Override
@@ -44,6 +48,9 @@ public class KeyInput implements KeyListener {
         }
         if (code == KeyEvent.VK_R) {
             restart = false;
+        }
+        if (code == KeyEvent.VK_SPACE) {
+            boast = false;
         }
     }
 
