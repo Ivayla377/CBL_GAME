@@ -224,11 +224,28 @@ public class Panel extends JPanel implements Runnable {
     }
 
     public void updateStage() {
-        if (score == 10 && stage == 1) {
+
+        if (score == 20 && stage == 1) {
             stage = 2;
             enemiesManager.initStage2Enemies(6);
             player.playertoString = "Stroopwaffel";
             player.loadPlayer();
+            System.out.println(stage);
+        }
+
+        if (score == 50 && stage == 2) {
+            stage = 3;
+            enemiesManager.initStage3Enemies(6);
+            //player.playertoString = "Stroopwaffel";
+            //player.loadPlayer();
+            System.out.println(stage);
+        }
+
+        if (score == 100 && stage == 3) {
+            stage = 4;
+            enemiesManager.initStage4Enemies(6);
+            //player.playertoString = "Stroopwaffel";
+            //player.loadPlayer();
             System.out.println(stage);
         }
     }

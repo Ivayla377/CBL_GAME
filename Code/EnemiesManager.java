@@ -48,6 +48,42 @@ public class EnemiesManager{
             enemies.add(enemy);
         }
     }
+
+    public void initStage3Enemies(int numEnemies) {
+        clearEnemies();
+        int lane;
+        int row;
+        for (int i = 0; i < numEnemies; i++) {
+
+            do {
+                lane = rand.nextInt(numLanes);
+                row = rand.nextInt(numRows);
+            } while (checkForOverlap(lane, row));
+
+            int randomX = lane * 100;
+            int randomY = row * -64;
+            Stage3Enemy enemy = new Stage3Enemy(randomX, randomY);
+            enemies.add(enemy);
+        }
+    }
+
+    public void initStage4Enemies(int numEnemies) {
+        clearEnemies();
+        int lane;
+        int row;
+        for (int i = 0; i < numEnemies; i++) {
+
+            do {
+                lane = rand.nextInt(numLanes);
+                row = rand.nextInt(numRows);
+            } while (checkForOverlap(lane, row));
+
+            int randomX = lane * 100;
+            int randomY = row * -64;
+            Stage4Enemy enemy = new Stage4Enemy(randomX, randomY);
+            enemies.add(enemy);
+        }
+    }
     
     private boolean checkForOverlap(int lane, int row) {
         int newEnemyX = lane * 100;
