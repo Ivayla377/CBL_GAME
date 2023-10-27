@@ -229,6 +229,7 @@ public class Panel extends JPanel implements Runnable {
             stage = 2;
             enemiesManager.initStage2Enemies(6);
             player.playertoString = "Stroopwaffel";
+            player.playertoString = "pancakes";
             player.loadPlayer();
             System.out.println(stage);
         }

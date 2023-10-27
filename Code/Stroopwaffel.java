@@ -17,7 +17,7 @@ public class Stroopwaffel {
     }
 
     private void loadStroopWaffel() {
-        ImageIcon ii = new ImageIcon("Images/Stroopwaffel.jpg");
+        ImageIcon ii = new ImageIcon("Images/Stroopwaffel.png");
         stroopWaffel = ii.getImage();        
     }
 }
