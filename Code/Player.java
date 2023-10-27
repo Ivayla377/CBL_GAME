@@ -2,6 +2,9 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.ImageIcon;
 
+/**
+ * Handle all information regarding player.
+ */
 public class Player {
 
     public int foodX;
@@ -13,6 +16,9 @@ public class Player {
     Image player;
     String playertoString;
 
+    /**
+     * Constructor for player.
+     */
     public Player() {
         foodX = 234;
         foodY = 716;
@@ -26,11 +32,18 @@ public class Player {
         loadPlayer();
     }
 
+    /**
+     * Draw player based on stage.
+     */
     public void loadPlayer() {
         ImageIcon ii = new ImageIcon("Images/" + playertoString + ".png");
         player = ii.getImage();
     }
-    
+
+    /**
+     * Update player position.
+     * @param keyInput Key Input
+     */
     public void updatePlayer(KeyInput keyInput) {
         if (keyInput.isLeft && (foodX - speed) > 0) {
             foodX -= speed;
@@ -39,17 +52,22 @@ public class Player {
             foodX += speed;
         }
         if (keyInput.isLeft && keyInput.boast && numberOfBoosts > 0) {
-            foodX -= speed*boostSpeed;
-            if(boostSpeed > 0) {
+            foodX -= speed * boostSpeed;
+            if (boostSpeed > 0) {
                 boostSpeed--;
-                if(boostSpeed == 0) { System.out.println("boast ended"); numberOfBoosts--;}
+                if (boostSpeed == 0) { 
+                    System.out.println("boast ended"); 
+                    numberOfBoosts--;
+                }
             }
         }
         if (keyInput.isRight && keyInput.boast && numberOfBoosts > 0) {
-            foodX += speed*boostSpeed;
-            if(boostSpeed > 0) {
+            foodX += speed * boostSpeed;
+            if (boostSpeed > 0) {
                 boostSpeed--;
-                if(boostSpeed == 0) { numberOfBoosts--;}
+                if (boostSpeed == 0) { 
+                    numberOfBoosts--;
+                }
             }
         }
     }

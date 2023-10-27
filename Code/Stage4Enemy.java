@@ -1,12 +1,9 @@
-import javax.swing.ImageIcon;
-import java.awt.*;
-
 /**
  * stage 1 enemy class.
  */
 public class Stage4Enemy extends Enemy {
 
-    private int speed = 3;
+    private int speed = 5;
     private String imageName = "Images/momo.png";
 
     /**

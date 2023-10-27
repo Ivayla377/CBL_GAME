@@ -1,6 +1,3 @@
-import javax.swing.ImageIcon;
-import java.awt.*;
-
 /**
  * stage 1 enemy class.
  */

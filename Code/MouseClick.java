@@ -1,6 +1,8 @@
-import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Class that deals with mouse events. Used to determine when the start button is pressed.
+ */
 public class MouseClick implements MouseListener {
 
     public int clickX;

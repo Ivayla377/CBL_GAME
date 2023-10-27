@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.*;
 import javax.swing.ImageIcon;
 
 /**
@@ -11,6 +10,11 @@ public class Enemy {
     private int speed;
     public Image enemyImage;
 
+    /**
+     * Constructs enemies with positions passed as parameters.
+     * @param enemyX X-position of enemy
+     * @param enemyY Y-position of enemy
+     */
     public Enemy(int enemyX, int enemyY) {
         this.enemyX = enemyX;
         this.enemyY = enemyY;
@@ -37,6 +41,9 @@ public class Enemy {
         return speed;
     }
 
+    /**
+     * Enemy movement across screen.
+     */
     public void moveEnemy() {
         int speed = getEnemySpeed();  
         if ((enemyY + speed) < 780) {
@@ -44,6 +51,12 @@ public class Enemy {
         }
     }
     
+    /**
+     * Check if the enemy has collided with the player.
+     * @param foodX Player x-position
+     * @param foodY Player y-position
+     * @return true -> collision; false -> no collision
+     */
     public boolean checkForCollision(int foodX, int foodY) {
         if ((enemyY + 50  >= foodY) && (enemyX >= foodX - 64) && (enemyX <= foodX + 64)) {
             return true;

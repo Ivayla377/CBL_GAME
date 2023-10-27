@@ -6,13 +6,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 
 /**
@@ -107,7 +105,7 @@ public class Panel extends JPanel implements Runnable {
                 Thread.sleep((long) timeToNext);
                 nextDraw += refresh;
             } catch (Exception e) {
-                // TODO: handle exception
+                System.out.println("Error in Thread");
             }
 
         }
@@ -125,16 +123,20 @@ public class Panel extends JPanel implements Runnable {
         if (keyInput.isLeft && bgX < 0) {
             bgX += 1;
         }
-        if (keyInput.isRight && bgX +780 > 600 ) {
+        if (keyInput.isRight && bgX + 780 > 600) {
             bgX -= 1;
         }
     }
 
+    /**
+     * Seperate thread that deals with audio.
+     */
     public void startBackgroundMusic() {
         if (!isMusicPlaying) {
             Thread musicThread = new Thread(() -> {
                 try {
-                    InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Media/final_countdown.wav");
+                    InputStream inputStream = 
+                        getClass().getClassLoader().getResourceAsStream("Media/bumperCar.wav");
                     AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
                     AudioFormat audioFormat = audioStream.getFormat();
 
@@ -153,6 +155,9 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Determine when the audio is stopped a.k.a. the thread is set to null.
+     */
     public void stopBackgroundMusic() {
         if (backgroundMusic != null) {
             backgroundMusic.stop();
@@ -200,7 +205,7 @@ public class Panel extends JPanel implements Runnable {
             graphics.drawImage(gameOver.restartText, 150, 100, this);
         }
 
-        if(isGameOver) {
+        if (isGameOver) {
             enemiesManager.clearEnemies();
         }
 
@@ -208,6 +213,9 @@ public class Panel extends JPanel implements Runnable {
 
     }
 
+    /**
+     * Method that implements all methods used to determine changes in enemies.
+     */
     public void updateFallEnemies() {
         for (Enemy enemy : enemiesManager.enemies) { 
             enemy.moveEnemy();
@@ -223,6 +231,9 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Method used to detect conditions needed to switch between each stage.
+     */
     public void updateStage() {
 
         if (score == 20 && stage == 1) {
@@ -237,20 +248,23 @@ public class Panel extends JPanel implements Runnable {
         if (score == 50 && stage == 2) {
             stage = 3;
             enemiesManager.initStage3Enemies(6);
-            //player.playertoString = "Stroopwaffel";
-            //player.loadPlayer();
+            player.playertoString = "Taco";
+            player.loadPlayer();
             System.out.println(stage);
         }
 
         if (score == 100 && stage == 3) {
             stage = 4;
             enemiesManager.initStage4Enemies(6);
-            //player.playertoString = "Stroopwaffel";
-            //player.loadPlayer();
+            player.playertoString = "Taco";
+            player.loadPlayer();
             System.out.println(stage);
         }
     }
 
+    /**
+     * Check when to paint Game Over screen.
+     */
     public void checkGameOver() {
         lives -= 1;
         if (lives == 0) {
@@ -261,6 +275,9 @@ public class Panel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Check is the r-key is pressed for restart.
+     */
     public void checkRestart() {
         if (isGameOver && keyInput.restart) {
             lives = 3;
@@ -274,13 +291,15 @@ public class Panel extends JPanel implements Runnable {
         
     }
 
-    // SCORE
+    /**
+     * Method used to keep track of score.
+     */
     public void saveMaxScore() {
         int maxScoreFromFile = 0;
         try {
             maxScoreFromFile = getScoreFromFile();
         } catch (IOException e) {
-            System.out.println("nz macka");
+            System.out.println("Error in score retrieval");
         }
         if (maxScoreFromFile < score) {
             File fold = new File("ScoreText.txt");
@@ -298,6 +317,10 @@ public class Panel extends JPanel implements Runnable {
 
     }
     
+    /**
+     * Display score in panel and update accordingly.
+     * @param num Score
+     */
     public void updateScore(int num) {
         scoreDigit = getDigit(num);
         printDigit.digitString = String.valueOf(scoreDigit);
@@ -312,12 +335,20 @@ public class Panel extends JPanel implements Runnable {
         printHundred.loadHundred();
     }
 
+    /**
+     * Draw score on panel.
+     * @param graphics Graphics used to draw
+     */
     public void drawScore(Graphics graphics) {
         printDigit.drawDigit(graphics);
         printTenth.drawTenth(graphics);
         printHundred.drawHundred(graphics);
     }
 
+    /**
+     * Draw score in panel before game is started.
+     * @param graphics Graphics used to draw
+     */
     public void drawMaxScore(Graphics graphics) {
         initM();
         initA();
@@ -330,7 +361,7 @@ public class Panel extends JPanel implements Runnable {
         try {
             max = getScoreFromFile();
         } catch (IOException e) {
-            System.out.println("nz macka");
+            System.out.println("Error at score retrieval");
         }
         updateScore(max);
         graphics.drawImage(printHundred.hundred, xC + 32, 0, this);
@@ -338,6 +369,9 @@ public class Panel extends JPanel implements Runnable {
         graphics.drawImage(printDigit.digit, xC + 96, 0, this);
     }
 
+    /**
+     * Draw score after game is over.
+     */
     public void drawFinalScore() {
         scoreDigit = score % 10;
         printDigit.digitString = String.valueOf(scoreDigit);
@@ -353,17 +387,15 @@ public class Panel extends JPanel implements Runnable {
 
     }
 
-    // UI
-    public int getScoreFromFile() throws IOException{
-        // Creating a path choosing file from local
-        // directory by creating an object of Path class
-        Path fileName = 
-            Path.of("ScoreText.txt");
- 
-        // Now calling Files.readString() method to
-        // read the file
+    /**
+     * Method that reads score from txt file.
+     * @return Score as int
+     * @throws IOException If such a file does not exist
+     */
+    public int getScoreFromFile() throws IOException {
+        Path fileName = Path.of("ScoreText.txt");
+
         String score = Files.readString(fileName);
-        // Printing the string
         return Integer.valueOf(score);
     }
 
@@ -410,7 +442,7 @@ public class Panel extends JPanel implements Runnable {
         return num / 100;
     }
 
-     /**
+    /**
      * Show how many lives left.
      */
     public void loadLive() {
