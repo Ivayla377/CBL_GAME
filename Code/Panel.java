@@ -38,6 +38,7 @@ public class Panel extends JPanel implements Runnable {
     boolean isGameOver = false;
     int bgX = -100;
     int bgY = 0;
+    int countStage = 1;
     
     Rectangle pseudoRectangle = new Rectangle(150, 200, 288, 216);
 
@@ -91,7 +92,7 @@ public class Panel extends JPanel implements Runnable {
         double nextDraw = System.nanoTime() + refresh;
 
         while (gameThread != null) {
-            if (stage != 0){
+            if (stage != 0) {
                 update();
             }
             repaint();
@@ -136,7 +137,7 @@ public class Panel extends JPanel implements Runnable {
             Thread musicThread = new Thread(() -> {
                 try {
                     InputStream inputStream = 
-                        getClass().getClassLoader().getResourceAsStream("Media/bumperCar.wav");
+                        getClass().getClassLoader().getResourceAsStream("Media/finalCountdown.wav");
                     AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
                     AudioFormat audioFormat = audioStream.getFormat();
 
@@ -236,24 +237,77 @@ public class Panel extends JPanel implements Runnable {
      */
     public void updateStage() {
 
+        updateStage2();
+
+        updateStage3();
+
+        checkStage4();
+    }
+
+    /**
+     * Check if player meets conditions to move on to next stage.
+     * @return true -> ready; false -> not ready;
+     */
+    public boolean checkStage2() {
         if (score == 20 && stage == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update stage accordingly.
+     */
+    public void updateStage2() {
+        if (checkStage2()) {
             stage = 2;
             enemiesManager.initStage2Enemies(6);
-            player.playertoString = "Stroopwaffel";
             player.playertoString = "pancakes";
             player.loadPlayer();
             System.out.println(stage);
         }
+    }
 
+    /**
+     * Check if player meets conditions to move on to next stage.
+     * @return true -> ready; false -> not ready;
+     */
+    public boolean checkStage3() {
         if (score == 50 && stage == 2) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update stage accordingly.
+     */
+    public void updateStage3() {
+        if (checkStage3()) {
             stage = 3;
             enemiesManager.initStage3Enemies(6);
-            player.playertoString = "Taco";
+            player.playertoString = "Cheese";
             player.loadPlayer();
             System.out.println(stage);
         }
+    }
 
+    /**
+     * Check if player meets conditions to move on to next stage.
+     * @return true -> ready; false -> not ready;
+     */
+    public boolean checkStage4() {
         if (score == 100 && stage == 3) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update stage accordingly.
+     */
+    public void updateStage4() {
+        if (checkStage4()) {
             stage = 4;
             enemiesManager.initStage4Enemies(6);
             player.playertoString = "Taco";

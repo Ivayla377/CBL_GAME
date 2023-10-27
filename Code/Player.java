@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.*;
 import javax.swing.ImageIcon;
 
 /**
@@ -45,29 +44,68 @@ public class Player {
      * @param keyInput Key Input
      */
     public void updatePlayer(KeyInput keyInput) {
+
+        pressedLeft(keyInput);
+
+        pressedRight(keyInput);
+
+        pressedBoostLeft(keyInput);
+
+        pressedBoostRight(keyInput);
+    }
+
+    /**
+     * Check if key to move left is pressed.
+     * @param keyInput Key Listener
+     */
+    public void pressedLeft(KeyInput keyInput) {
         if (keyInput.isLeft && (foodX - speed) > 0) {
             foodX -= speed;
         }
-        if (keyInput.isRight && (foodX + speed) < 536) {
+    }
+
+    /**
+     * Check if key to move right is pressed.
+     * @param keyInput Key Listener
+     */
+    public void pressedRight(KeyInput keyInput) {
+        if (keyInput.isRight && (foodX - speed) > 0) {
             foodX += speed;
         }
+    }
+
+    /**
+     * Check if boost to the left is pressed.
+     * @param keyInput Key Listener
+     */
+    public void pressedBoostLeft(KeyInput keyInput) {
         if (keyInput.isLeft && keyInput.boast && numberOfBoosts > 0) {
             foodX -= speed * boostSpeed;
-            if (boostSpeed > 0) {
-                boostSpeed--;
-                if (boostSpeed == 0) { 
-                    System.out.println("boast ended"); 
-                    numberOfBoosts--;
-                }
-            }
+            checkBoostLeft();
         }
+    }
+
+    /**
+     * Check if boost to the right is pressed.
+     * @param keyInput Key Listener
+     */
+    public void pressedBoostRight(KeyInput keyInput) {
         if (keyInput.isRight && keyInput.boast && numberOfBoosts > 0) {
             foodX += speed * boostSpeed;
-            if (boostSpeed > 0) {
-                boostSpeed--;
-                if (boostSpeed == 0) { 
-                    numberOfBoosts--;
-                }
+            checkBoostLeft();
+        }
+    }
+
+    /**
+     * Check if there are any boosts left.
+     */
+    public void checkBoostLeft() {
+
+        if (boostSpeed > 0) {
+            boostSpeed--;
+            if (boostSpeed == 0) { 
+                System.out.println("boast ended"); 
+                numberOfBoosts--;
             }
         }
     }
