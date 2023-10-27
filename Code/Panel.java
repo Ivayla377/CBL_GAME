@@ -241,7 +241,7 @@ public class Panel extends JPanel implements Runnable {
 
         updateStage3();
 
-        checkStage4();
+        updateStage4();
     }
 
     /**

@@ -9,6 +9,9 @@ public class Tenth {
     Image tenth;
     String tenthString;
 
+    /**
+     * Constructor.
+     */
     public Tenth() {
         tenthString = "0";
         initTenth();
@@ -18,6 +21,9 @@ public class Tenth {
         loadTenth();
     }
 
+    /**
+     * Load Image.
+     */
     public void loadTenth() {
         ImageIcon ii = new ImageIcon("Images/" + tenthString + ".png");
         tenth = ii.getImage();

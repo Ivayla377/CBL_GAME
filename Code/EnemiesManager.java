@@ -115,12 +115,19 @@ public class EnemiesManager {
         int newEnemyY = row * -64;
 
         for (Enemy enemy : enemies) {
-            if (newEnemyX + 64 >= enemy.enemyX + 64 &&
-                newEnemyX <= enemy.enemyX &&
-                newEnemyY <= enemy.enemyY + 64 &&
-                newEnemyY + 64 >= enemy.enemyY) {
-                return true; 
+            if (checkForOverlap(newEnemyX, newEnemyY, enemy)) {
+                return true;
             }
+        }
+        return false;
+    }
+
+    private boolean checkForOverlap(int newEnemyX, int newEnemyY, Enemy enemy) {
+        if (newEnemyX + 64 >= enemy.enemyX + 64 
+                && newEnemyX <= enemy.enemyX 
+                && newEnemyY <= enemy.enemyY + 64 
+                && newEnemyY + 64 >= enemy.enemyY) {
+            return true; 
         }
         return false;
     }

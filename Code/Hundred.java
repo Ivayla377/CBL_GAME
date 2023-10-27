@@ -9,6 +9,9 @@ public class Hundred {
     Image hundred;
     String hundredString;
 
+    /**
+     * Constructor.
+     */
     public Hundred() {
         hundredString = "0";
         initHundred();
@@ -18,6 +21,9 @@ public class Hundred {
         loadHundred();
     }
 
+    /**
+     * Load Image.
+     */
     public void loadHundred() {
         ImageIcon ii = new ImageIcon("Images/" + hundredString + ".png");
         hundred = ii.getImage();

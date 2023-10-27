@@ -9,6 +9,9 @@ public class Digit {
     Image digit;
     String digitString;
 
+    /**
+     * Constructor.
+     */
     public Digit() {
         digitString = "0";
         initDigit();
@@ -18,6 +21,9 @@ public class Digit {
         loadDigit();
     }
 
+    /**
+     * Load Image.
+     */
     public void loadDigit() {
         ImageIcon ii = new ImageIcon("Images/" + digitString + ".png");
         digit = ii.getImage();

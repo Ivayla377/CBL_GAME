@@ -1,12 +1,18 @@
 import java.awt.*;
 import javax.swing.ImageIcon;
 
+/**
+ * Game Over screen.
+ */
 public class GameOver {
     
     Image gameOver;
     Image restartText;
 
 
+    /**
+     * Constructor.
+     */
     public GameOver() {
         initGameOver();
         initRestartText();

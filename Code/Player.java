@@ -69,7 +69,7 @@ public class Player {
      * @param keyInput Key Listener
      */
     public void pressedRight(KeyInput keyInput) {
-        if (keyInput.isRight && (foodX - speed) > 0) {
+        if (keyInput.isRight && (foodX + speed + 64) < 600) {
             foodX += speed;
         }
     }

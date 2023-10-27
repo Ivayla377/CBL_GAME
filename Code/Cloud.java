@@ -16,6 +16,9 @@ public class Cloud {
         loadCloud();
     }
 
+    /**
+     * Load Image.
+     */
     public void loadCloud() {
         ImageIcon ii = new ImageIcon("Images/Cloud.jpg");
         cloud = ii.getImage();
